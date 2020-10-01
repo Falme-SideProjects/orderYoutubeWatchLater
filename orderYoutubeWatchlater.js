@@ -1,15 +1,16 @@
 //Limit of loop : How many Videos are in Watch later
-var totalVideos= document.getElementsByClassName("ytd-thumbnail-overlay-time-status-renderer").length;
-var actual =1; //Number of actual index loop
+var totalVideos= document.querySelectorAll('[page-subtype="playlist"] .ytd-thumbnail-overlay-time-status-renderer').length;
+var actual = 1; //Number of actual index loop
 var timeslooped = 0; //How many times have found the video in loop
 
 //Array to save duration of all videos
 var arrayDurations = new Array();
 
 //set values to array
-for(var a=1; a<totalVideos; a+=2){
+for(var a=1, b=1; a<totalVideos; a+=2, b++){
 	//Set as duration of each video
-	arrayDurations[a] = parseInt((document.querySelectorAll('.ytd-thumbnail-overlay-time-status-renderer')[a].innerHTML).replace(/\:/g, ''));
+    arrayDurations[b] = parseInt((document.querySelectorAll('[page-subtype="playlist"] .ytd-thumbnail-overlay-time-status-renderer')[a].innerHTML).replace(/\:/g, ''));
+    console.log("for1 : "+arrayDurations[b]);
 }
 
 //sort in descending order
@@ -28,28 +29,14 @@ function startSearch(){
 
 	if(actual < totalVideos)
 		window.setTimeout(function(){startSearch()},500);
-
-	/*while(actual < totalVideos && !found){
-		
-		var savo = parseInt((document.querySelectorAll('.timestamp')[actual].children[0].innerHTML).replace(/\:/g, ''));
-
-		//If matches
-		if(savo == arrayDurations[0]){
-			arrayDurations.shift();
-			console.log(arrayDurations.length);
-		}
-		actual++;
-	}
-
-	actual=0;
-	startSearch();*/
-
 }
 //Function to move video to top
 function reorder(a){
 
 	//Set SAVO to compare atual video time to array
 	var savo = parseInt((document.querySelectorAll('.ytd-thumbnail-overlay-time-status-renderer')[a].innerHTML).replace(/\:/g, ''));
+
+    console.log(a+" : "+savo);
 
 	//If matches
 	if(savo == arrayDurations[0]){
@@ -60,7 +47,7 @@ function reorder(a){
 		document.querySelectorAll("ytd-menu-service-item-renderer")[3].click();
 		arrayDurations.shift(); //remove video time
 		//actual=timeslooped; //reset actual loop index
-		actual=0; //reset actual loop index
+		actual=1; //reset actual loop index
 
 		return true;
 	}
