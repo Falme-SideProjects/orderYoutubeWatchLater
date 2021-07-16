@@ -35,7 +35,7 @@ function startSearch(){
 function reorder(a){
 
 	//Set SAVO to compare atual video time to array
-	var savo = parseInt((document.querySelectorAll('.ytd-thumbnail-overlay-time-status-renderer')[a].innerHTML).replace(/\:/g, ''));
+	var savo = parseInt((document.querySelectorAll('[page-subtype="playlist"] .style-scope.ytd-thumbnail-overlay-time-status-renderer')[a].innerHTML).replace(/\:/g, ''));
 
     console.log(a+" : "+savo);
     console.log("@" + arrayDurations[0]+" : "+(savo == arrayDurations[0]));
@@ -44,10 +44,10 @@ function reorder(a){
 	if(savo == arrayDurations[0]){
 		timeslooped++; //to do not begin all again
  
-		console.log("$ "+a+ " : " + document.querySelectorAll("#contents button.style-scope.yt-icon-button")[Math.floor(a/2)]);
+		console.log("$ "+a+ " : " + document.querySelectorAll("[page-subtype='playlist'] #contents button.style-scope.yt-icon-button")[Math.floor(a/2)]);
 		
 		//get elements to move up
-		document.querySelectorAll("#contents button.style-scope.yt-icon-button")[Math.floor(a/2)].click();
+		document.querySelectorAll("[page-subtype='playlist'] #contents button.style-scope.yt-icon-button")[Math.floor(a/2)].click();
 		
 		if(document.querySelectorAll("ytd-menu-service-item-renderer yt-formatted-string")[3].innerHTML == "Mover para o início")
 			document.querySelectorAll("ytd-menu-service-item-renderer")[3].click();
