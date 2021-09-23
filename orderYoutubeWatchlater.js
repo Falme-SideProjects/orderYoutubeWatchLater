@@ -1,5 +1,8 @@
+var timestampElement = '[page-subtype="playlist"] span.ytd-thumbnail-overlay-time-status-renderer';
+
 //Limit of loop : How many Videos are in Watch later
-var totalVideos= document.querySelectorAll('[page-subtype="playlist"] .ytd-thumbnail-overlay-time-status-renderer').length;
+var totalVideos= document.querySelectorAll(timestampElement).length;
+//new -> document.querySelectorAll('[page-subtype="playlist"] span.ytd-thumbnail-overlay-time-status-renderer').length
 var actual = 1; //Number of actual index loop
 var timeslooped = 0; //How many times have found the video in loop
 
@@ -7,10 +10,9 @@ var timeslooped = 0; //How many times have found the video in loop
 var arrayDurations = new Array();
 
 //set values to array
-for(var a=1, b=1; a<totalVideos; a+=2, b++){
+for(var a=0; a<totalVideos; a++){
 	//Set as duration of each video
-    arrayDurations[b] = parseInt((document.querySelectorAll('[page-subtype="playlist"] .ytd-thumbnail-overlay-time-status-renderer')[a].innerHTML).replace(/\:/g, ''));
-    console.log("for1 : "+arrayDurations[b]);
+    arrayDurations[a] = parseInt((document.querySelectorAll(timestampElement)[a].innerHTML).replace(/\:/g, ''));
 }
 
 //sort in descending order
@@ -20,12 +22,11 @@ arrayDurations.sort(function(a, b){return b - a});
 function startSearch(){
 
 	var found = false;
-
-	console.log("%%" + actual + " : " +totalVideos)
-	while(actual < totalVideos && !found){
-		console.log(actual);
+	
+	while(actual < totalVideos && !found)
+	{
 		found = reorder(actual);
-		actual+=2;
+		actual++;
 	}
 
 	if(actual < totalVideos)
@@ -35,19 +36,14 @@ function startSearch(){
 function reorder(a){
 
 	//Set SAVO to compare atual video time to array
-	var savo = parseInt((document.querySelectorAll('[page-subtype="playlist"] .style-scope.ytd-thumbnail-overlay-time-status-renderer')[a].innerHTML).replace(/\:/g, ''));
-
-    console.log(a+" : "+savo);
-    console.log("@" + arrayDurations[0]+" : "+(savo == arrayDurations[0]));
+	var savo = parseInt((document.querySelectorAll('[page-subtype="playlist"] span.style-scope.ytd-thumbnail-overlay-time-status-renderer')[a].innerHTML).replace(/\:/g, ''));
 
 	//If matches
 	if(savo == arrayDurations[0]){
 		timeslooped++; //to do not begin all again
  
-		console.log("$ "+a+ " : " + document.querySelectorAll("[page-subtype='playlist'] #contents button.style-scope.yt-icon-button")[Math.floor(a/2)]);
-		
 		//get elements to move up
-		document.querySelectorAll("[page-subtype='playlist'] #contents button.style-scope.yt-icon-button")[Math.floor(a/2)].click();
+		document.querySelectorAll("[page-subtype='playlist'] #contents button.style-scope.yt-icon-button")[a].click();
 		
 		if(document.querySelectorAll("ytd-menu-service-item-renderer yt-formatted-string")[3].innerHTML == "Mover para o início")
 			document.querySelectorAll("ytd-menu-service-item-renderer")[3].click();
@@ -55,7 +51,6 @@ function reorder(a){
 			document.querySelectorAll("ytd-menu-service-item-renderer")[2].click();
 		
 		arrayDurations.shift(); //remove video time
-		//actual=timeslooped; //reset actual loop index
 		actual=1; //reset actual loop index
 
 		return true;
