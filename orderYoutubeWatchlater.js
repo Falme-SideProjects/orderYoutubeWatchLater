@@ -29,8 +29,6 @@ function startSearch()
 		actual++;
 	}
 
-	if(videoDurations.length > 0)
-		window.setTimeout(function(){startSearch()},1000);
 }
 
 //Function to move video to top
@@ -45,14 +43,16 @@ function reorder(a)
     {
 		//get elements to move up
 		document.querySelectorAll("[page-subtype='playlist'] #contents button.style-scope.yt-icon-button")[a].click();
+        
+        window.setTimeout(function(){
+            if(document.querySelectorAll("ytd-menu-service-item-renderer yt-formatted-string")[3].innerHTML == "Mover para o início")
+                document.querySelectorAll("ytd-menu-service-item-renderer")[3].click();
+                
+            videoDurations.shift(); //remove video time
+            actual=0; //reset actual loop index
 
-		if(document.querySelectorAll("ytd-menu-service-item-renderer yt-formatted-string")[3].innerHTML == "Mover para o início")
-			document.querySelectorAll("ytd-menu-service-item-renderer")[3].click();
-		else if(document.querySelectorAll("ytd-menu-service-item-renderer yt-formatted-string")[2].innerHTML == "Mover para o início")
-			document.querySelectorAll("ytd-menu-service-item-renderer")[2].click();
-		
-		videoDurations.shift(); //remove video time
-		actual=0; //reset actual loop index
+            startSearch();
+        },500);
 
 		return true;
 	}
