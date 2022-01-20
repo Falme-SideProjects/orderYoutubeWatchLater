@@ -52,7 +52,7 @@ function reorder(a)
             actual=0; //reset actual loop index
 
             startSearch();
-        },500);
+        },1000);
 
 		return true;
 	}
